@@ -29,7 +29,8 @@ The answer to the question, "Is ***Insertion Sort*** an efficient algorithm?" is
 
 
 ## Bubble Sort
-In **Bubble Sort**, we make a series of swaps between adjacent elements, gradually moving larger elements towards the end of the array (or _bubbling_ larger elements up).
+In **Bubble Sort**, we make a series of swaps between adjacent elements,
+gradually moving larger elements towards the end of the array (or _bubbling_ larger elements up).
 
 ### Algorithm
 1. Loop through your array
