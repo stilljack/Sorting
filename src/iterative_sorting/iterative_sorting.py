@@ -4,20 +4,26 @@ import math
 import time
 import random
 import timeit
-
+import numpy
+##+90 to -90 long +180 to -180
+random_float_number = numpy.random.uniform(-90.0, 90.0)
+import src.recursive_sorting.recursive_sorting
 # timeit integration via https://www.pythoncentral.io/time-a-python-function/
 # use: >>> wrapped = wrapper(costly_func, short_list)
 # >>> timeit.timeit(wrapped, number=1000)
 
 #this is the number of times to execute the timer checks
-executeConst = 10
+executeConst = 2
 
 #variables of use later (lol great docs jack)
 def newRand(amountToReturn,targetRange):
-    new = random.sample(range(targetRange), amountToReturn)
+    new = [0 for i in range(amountToReturn)]
+    for i in range(amountToReturn):
+        new[i] =numpy.random.uniform(-90.0, 90.0)
     return new
+
 finalResult = {}
-maxRange = 100000
+maxRange = 10000000
 sizeOfLists = 10001
 myRandoms = newRand(sizeOfLists,maxRange)
 
@@ -45,7 +51,7 @@ def doTestsWith(func):
         wrapped = wrapper(func,newRandom)
         nameOfTest = f"{func.__name__} list {count}"
         print(f" execute count: {executeConst} Fun: {func.__name__} list: list{count}")
-        finalResult[nameOfTest] = timeit.timeit(wrapped, number=executeConst)
+        finalResult[nameOfTest] = timeit.timeit(wrapped, number=1)
 
        # # print(f"final result k = {nameOfTest} v = {finalResult[nameOfTest]}")
 
@@ -65,7 +71,7 @@ def insertion_sort(list_to_sort):
             j -= 1
         # c. When the correct index is found, copy temp into this position
         list_to_sort[j] = temp
-
+    print (list_to_sort)
     return list_to_sort
 
 def selection_sort( arr ):
@@ -80,6 +86,7 @@ def selection_sort( arr ):
             if answer[smallest_index] > answer[j]:
                 smallest_index = j
         answer[i], answer[smallest_index] = answer[smallest_index], answer[i]
+    print(answer)
     return answer
 
 print("\n")
@@ -92,12 +99,14 @@ def bubble_sort( arr ):
         for j in range(0, length-i-1): #the last x-i-1 will already be assigned
             if answer[j] > answer[j+1] :
                 answer[j], answer[j+1] = answer[j+1], answer[j]
+    print(answer)
     return answer
 
 
 
 # STRETCH: implement the Count Sort function below
 def count_sort( arr, maximum=maxRange ):
+
     newval=arr
     m = maximum + 1
     count = [0 for i in range(m)]
@@ -109,13 +118,14 @@ def count_sort( arr, maximum=maxRange ):
         for c in range(count[a]):
             newval[i] = a
             i += 1
+    print(newval)
     return newval
 
 ### HERE BE ENTRY POINT###
-doTestsWith(count_sort)
+#doTestsWith(count_sort)
 doTestsWith(insertion_sort)
-#doTestsWith(bubble_sort)
-#doTestsWith(selection_sort)
+doTestsWith(bubble_sort)
+doTestsWith(selection_sort)
 
 #####here be print out#####
 for k,v in finalResult.items():
