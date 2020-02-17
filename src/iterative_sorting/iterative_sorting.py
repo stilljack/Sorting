@@ -13,21 +13,23 @@ import timeit
 executeConst = 10
 
 #variables of use later (lol great docs jack)
-finalResult = {str:float}
+def newRand(amountToReturn,targetRange):
+    new = random.sample(range(targetRange), amountToReturn)
+    return new
+finalResult = {}
 maxRange = 100000
-sizeOfLists = 10000
-myRandoms = random.sample(range(maxRange), sizeOfLists)
-sortList1 = [random.randint(0, maxRange) for i in range(sizeOfLists)]
-sortList2 = [9,105,200,325,8,7,6,5,2,3,4]
-lists = [myRandoms,sortList1,sortList2,]
+sizeOfLists = 10001
+myRandoms = newRand(sizeOfLists,maxRange)
+
 finalResult["maxRange"] =maxRange
 finalResult["sizeOfLists"]=sizeOfLists
 print(f"max range = {maxRange}")
 print(f"sizeOfLists = {sizeOfLists}")
 print(f"myRandoms len = {len(myRandoms)}")
-print(f"sortlist1 len = {len(sortList1)}")
-print(f"sortlist2 len= {len(sortList2)}")
 print("\n")
+
+
+
 
 def wrapper(func, *args, **kwargs):
     def wrapped():
@@ -36,13 +38,16 @@ def wrapper(func, *args, **kwargs):
 
 def doTestsWith(func):
     count = 0
-    for list in lists:
+    for i in range(executeConst):
         count+=1
-        wrapped = wrapper(func,list)
+        newRandom=newRand(sizeOfLists,maxRange)
+        print(newRandom)
+        wrapped = wrapper(func,newRandom)
         nameOfTest = f"{func.__name__} list {count}"
-        print(f" execute count: {executeConst} Fun: {func.__name__} list: {list}")
+        print(f" execute count: {executeConst} Fun: {func.__name__} list: list{count}")
         finalResult[nameOfTest] = timeit.timeit(wrapped, number=executeConst)
-       # print(f"final result k = {nameOfTest} v = {finalResult[nameOfTest]}")
+
+       # # print(f"final result k = {nameOfTest} v = {finalResult[nameOfTest]}")
 
 
 def insertion_sort(list_to_sort):
@@ -58,7 +63,7 @@ def insertion_sort(list_to_sort):
             # Shift items over to the right as you iterate
             list_to_sort[j] = list_to_sort[j - 1]
             j -= 1
-    # c. When the correct index is found, copy temp into this position
+        # c. When the correct index is found, copy temp into this position
         list_to_sort[j] = temp
 
     return list_to_sort
@@ -70,16 +75,12 @@ def selection_sort( arr ):
         #print(f"begin for i = {i} is {arr[i]}")
         smallest_index = i
         # TO-DO: find next smallest element
-        # (hint, can do in 3 loc) 
+        # (hint, can do in 3 loc)
         for j in range(i+1, len(arr)):
             if answer[smallest_index] > answer[j]:
                 smallest_index = j
         answer[i], answer[smallest_index] = answer[smallest_index], answer[i]
     return answer
-
-
-
-
 
 print("\n")
 
@@ -96,16 +97,27 @@ def bubble_sort( arr ):
 
 
 # STRETCH: implement the Count Sort function below
-def count_sort( arr, maximum=-1 ):
+def count_sort( arr, maximum=maxRange ):
+    newval=arr
+    m = maximum + 1
+    count = [0 for i in range(m)]
+    for a in newval:
+    # count occurences
+        count[a] += 1
+    i = 0
+    for a in range(m):
+        for c in range(count[a]):
+            newval[i] = a
+            i += 1
+    return newval
 
-    return arr
-
-
-doTestsWith(insertion_sort)
-doTestsWith(bubble_sort)
-doTestsWith(selection_sort)
+### HERE BE ENTRY POINT###
 doTestsWith(count_sort)
+doTestsWith(insertion_sort)
+#doTestsWith(bubble_sort)
+#doTestsWith(selection_sort)
 
+#####here be print out#####
 for k,v in finalResult.items():
     print(f"k = {k} v = {v}")
 
