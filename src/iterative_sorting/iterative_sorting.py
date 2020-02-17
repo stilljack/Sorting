@@ -10,19 +10,23 @@ import timeit
 # >>> timeit.timeit(wrapped, number=1000)
 
 #this is the number of times to execute the timer checks
-executeConst = 10000
+executeConst = 10
 
 #variables of use later (lol great docs jack)
 finalResult = {str:float}
-myRange = 100
-size = 100
-myRandoms = random.sample(range(myRange),size)
-sortList1 = [random.randint(0,myRange) for i in range(size)]
+maxRange = 100000
+sizeOfLists = 10000
+myRandoms = random.sample(range(maxRange), sizeOfLists)
+sortList1 = [random.randint(0, maxRange) for i in range(sizeOfLists)]
 sortList2 = [9,105,200,325,8,7,6,5,2,3,4]
-
+lists = [myRandoms,sortList1,sortList2,]
+finalResult["maxRange"] =maxRange
+finalResult["sizeOfLists"]=sizeOfLists
+print(f"max range = {maxRange}")
+print(f"sizeOfLists = {sizeOfLists}")
 print(f"myRandoms len = {len(myRandoms)}")
 print(f"sortlist1 len = {len(sortList1)}")
-print(f"sortlist2 = {sortList2}")
+print(f"sortlist2 len= {len(sortList2)}")
 print("\n")
 
 def wrapper(func, *args, **kwargs):
@@ -30,6 +34,34 @@ def wrapper(func, *args, **kwargs):
         return func(*args, **kwargs)
     return wrapped
 
+def doTestsWith(func):
+    count = 0
+    for list in lists:
+        count+=1
+        wrapped = wrapper(func,list)
+        nameOfTest = f"{func.__name__} list {count}"
+        print(f" execute count: {executeConst} Fun: {func.__name__} list: {list}")
+        finalResult[nameOfTest] = timeit.timeit(wrapped, number=executeConst)
+       # print(f"final result k = {nameOfTest} v = {finalResult[nameOfTest]}")
+
+
+def insertion_sort(list_to_sort):
+    # Separate the first element from the rest of the array. Think about it as a sorted list of one element.
+    # For all other indices, beginning with [1]:
+    for i in range(1, len(list_to_sort)):
+        #a. Copy the item at that index into a temp variable
+        temp = list_to_sort[i]
+
+        # b. Iterate to the left until you find the correct index in the "sorted" part of the array at which this element should be inserted
+        j = i
+        while j > 0 and temp < list_to_sort[j-1]:
+            # Shift items over to the right as you iterate
+            list_to_sort[j] = list_to_sort[j - 1]
+            j -= 1
+    # c. When the correct index is found, copy temp into this position
+        list_to_sort[j] = temp
+
+    return list_to_sort
 
 def selection_sort( arr ):
     # loop through n-1 elements
@@ -46,22 +78,8 @@ def selection_sort( arr ):
     return answer
 
 
-wrapped = wrapper(selection_sort,sortList1)
-print(f"time for selectionsort of sortlist1 executed x {executeConst}")
-finalResult[f"selection_sort.sortlist1"] = timeit.timeit(wrapped, number=executeConst)
-print(finalResult[f"selection_sort.sortlist1"])
-wrapped = wrapper(selection_sort,myRandoms)
-print(f"time for selectionsort of myrand executed x {executeConst}")
-finalResult[f"selection_sort.myRandoms"] = timeit.timeit(wrapped, number=executeConst)
-print(finalResult[f"selection_sort.sortlist1"])
 
 
-print(
-    f"sort list 1 {selection_sort(sortList1)}"
-)
-print(
-    f"myRandoms {selection_sort(myRandoms)}"
-)
 
 print("\n")
 
@@ -75,20 +93,6 @@ def bubble_sort( arr ):
                 answer[j], answer[j+1] = answer[j+1], answer[j]
     return answer
 
-wrapped = wrapper(bubble_sort,sortList1)
-print(f"time for bubblesort of sortlist1 executed x {executeConst}")
-finalResult[f"bubble_sort.sortlist1"] = timeit.timeit(wrapped, number=executeConst)
-print(finalResult[f"bubble_sort.sortlist1"])
-wrapped = wrapper(bubble_sort,myRandoms)
-print(f"time for bubble_sort of myrand executed x {executeConst}")
-finalResult[f"bubble_sort.myRandoms"] = timeit.timeit(wrapped, number=executeConst)
-print(finalResult[f"bubble_sort.myRandoms"])
-print(
-    f"sort list 1{bubble_sort(sortList1)}"
-)
-print(
-    f"myRandoms {bubble_sort(myRandoms)}"
-)
 
 
 # STRETCH: implement the Count Sort function below
@@ -97,5 +101,39 @@ def count_sort( arr, maximum=-1 ):
     return arr
 
 
+doTestsWith(insertion_sort)
+doTestsWith(bubble_sort)
+doTestsWith(selection_sort)
+doTestsWith(count_sort)
+
 for k,v in finalResult.items():
     print(f"k = {k} v = {v}")
+
+
+
+
+# wrapped = wrapper(insertion_sort,sortList1)
+# print(f"time for insertion_sort of sortlist1 executed x {executeConst}")
+# finalResult[f"insertion_sort.sortlist1"] = timeit.timeit(wrapped, number=executeConst)
+# print(finalResult[f"insertion_sort.sortlist1"])
+# wrapped = wrapper(insertion_sort,myRandoms)
+# print(f"time for insertion_sort of myrand executed x {executeConst}")
+# finalResult[f"insertion_sort.myRandoms"] = timeit.timeit(wrapped, number=executeConst)
+# print(finalResult[f"insertion_sort.myRandoms"])
+# wrapped = wrapper(selection_sort,sortList1)
+# print(f"time for selectionsort of sortlist1 executed x {executeConst}")
+# finalResult[f"selection_sort.sortlist1"] = timeit.timeit(wrapped, number=executeConst)
+# print(finalResult[f"selection_sort.sortlist1"])
+# wrapped = wrapper(selection_sort,myRandoms)
+# print(f"time for selectionsort of myrand executed x {executeConst}")
+# finalResult[f"selection_sort.myRandoms"] = timeit.timeit(wrapped, number=executeConst)
+# print(finalResult[f"selection_sort.sortlist1"])
+#
+# wrapped = wrapper(bubble_sort,sortList1)
+# print(f"time for bubblesort of sortlist1 executed x {executeConst}")
+# finalResult[f"bubble_sort.sortlist1"] = timeit.timeit(wrapped, number=executeConst)
+# print(finalResult[f"bubble_sort.sortlist1"])
+# wrapped = wrapper(bubble_sort,myRandoms)
+# print(f"time for bubble_sort of myrand executed x {executeConst}")
+# finalResult[f"bubble_sort.myRandoms"] = timeit.timeit(wrapped, number=executeConst)
+# print(finalResult[f"bubble_sort.myRandoms"])
