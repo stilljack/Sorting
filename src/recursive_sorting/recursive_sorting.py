@@ -1,10 +1,10 @@
 # TO-DO: complete the helpe function below to merge 2 sorted arrays
 
+import random
+from src.BenchMarker import *
 
-from src.Tester import *
 
 
-tstr= Tester(2,1000,0,10000)
 
 
 def merge(arrA, arrB):
@@ -49,9 +49,40 @@ def merge_sort(arr):
         return arr
 
 print (merge_sort([1, 5, 8, 4, 2, 9, 6, 0, 3, 7]))
-tstr.doTestsWith(merge_sort)
-tstr.printResults()
 
+
+#quick sort as per guided
+
+def partition(data):
+    left =[]
+    pivot = data[0]
+    right = []
+
+    for item in data[1:]:
+        if item < pivot:
+            left.append(item)
+        else:
+            right.append(item)
+
+    return left,pivot,right
+
+def quicksort(data):
+    if data == []:
+        return data
+    left,pivot,right = partition(data)
+    return quicksort(left) + [pivot] + quicksort(right)
+
+
+
+def quicksortAlt(arr):
+    if arr:
+        pivot = random.choice(arr)
+        low = [n for n in arr if n < pivot]
+        middle = [n for n in arr if n == pivot]
+        high = [n for n in arr if n > pivot]
+        return [*quicksort(low), *middle, *quicksort(high)]
+    else:
+        return []
 # STRETCH: implement an in-place merge sort algorithm
 def merge_in_place(arr, start, mid, end):
     # TO-DO
