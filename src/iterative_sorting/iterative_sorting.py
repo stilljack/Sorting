@@ -5,13 +5,16 @@ import time
 import random
 import timeit
 import numpy
-##+90 to -90 long +180 to -180
+##+ lat 90 to -90 long +180 to -180
 random_float_number = numpy.random.uniform(-90.0, 90.0)
 import src.recursive_sorting.recursive_sorting
 # timeit integration via https://www.pythoncentral.io/time-a-python-function/
 # use: >>> wrapped = wrapper(costly_func, short_list)
 # >>> timeit.timeit(wrapped, number=1000)
 
+
+class capture(object):
+    pass
 #this is the number of times to execute the timer checks
 executeConst = 2
 
@@ -123,9 +126,9 @@ def count_sort( arr, maximum=maxRange ):
 
 ### HERE BE ENTRY POINT###
 #doTestsWith(count_sort)
-doTestsWith(insertion_sort)
-doTestsWith(bubble_sort)
-doTestsWith(selection_sort)
+#doTestsWith(insertion_sort)
+#doTestsWith(bubble_sort)
+#doTestsWith(selection_sort)
 
 #####here be print out#####
 for k,v in finalResult.items():
