@@ -4,7 +4,7 @@ import random
 from src.BenchMarker import *
 
 
-tstr= BenchMarker(5, 100000, 0, 100000)
+
 
 
 def merge(arrA, arrB):
@@ -49,8 +49,7 @@ def merge_sort(arr):
         return arr
 
 print (merge_sort([1, 5, 8, 4, 2, 9, 6, 0, 3, 7]))
-tstr.doTestsWith(merge_sort)
-tstr.printResults()
+
 
 #quick sort as per guided
 
@@ -73,7 +72,6 @@ def quicksort(data):
     left,pivot,right = partition(data)
     return quicksort(left) + [pivot] + quicksort(right)
 
-tstr.doTestsWith(quicksort)
 
 
 def quicksortAlt(arr):
