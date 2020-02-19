@@ -2,6 +2,7 @@ import timeit
 
 import numpy
 
+
 class BenchMarker(object):
     def _newRand_(self,amountToReturn, low, high,float =False):
         new = [0 for i in range(amountToReturn)]
@@ -46,4 +47,5 @@ class BenchMarker(object):
         self.sizeOfTests = sizeOfTests
         self.lowRange = lowRange
         self.highRange = highRange
+
 
