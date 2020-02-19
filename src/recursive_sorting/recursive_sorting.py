@@ -1,6 +1,7 @@
 # TO-DO: complete the helpe function below to merge 2 sorted arrays
 
 import random
+import math
 from src.BenchMarker import *
 
 
@@ -83,20 +84,113 @@ def quicksortAlt(arr):
         return [*quicksort(low), *middle, *quicksort(high)]
     else:
         return []
+
 # STRETCH: implement an in-place merge sort algorithm
+
 def merge_in_place(arr, start, mid, end):
-    # TO-DO
+    right = mid + 1
+    if (arr[mid] <= arr[right]):
+        return
+
+    while (start <= mid and right <= end):
+
+        # If element 1 is in right place
+        if (arr[start] <= arr[right]):
+            start += 1
+        else:
+            tmp = arr[right]
+            index = right
+
+            while (index != start):
+                arr[index] = arr[index - 1]
+                index -= 1
+
+            arr[start] = tmp
+
+            start += 1
+            mid += 1
+            right += 1
 
     return arr
 
+def mergeSortInPlace(list, l, r):
 
-def merge_sort_in_place(arr, l, r):
-    # TO-DO
+    if (l < r):
+
+        # Same as (l + r) / 2, but avoids overflow
+        # for large l and r
+        m = l + (r - l) // 2;
+
+        # Sort first and second halves
+        mergeSortInPlace(list, l, m);
+        mergeSortInPlace(list, m + 1, r);
+
+        merge_in_place(list, l, m, r);
+
+
+#
+# # STRETCH: implement the Timsort function below
+# # hint: check out https://github.com/python/cpython/blob/master/Objects/listsort.txt
+# def timsort(arr):
+#     return arr
+##impl stolen from an article, https://www.codespeedy.com/timsort-algorithm-implementation-in-python/
+#good stuff here
+minrun = 32
+def InsSort(arr,start,end):
+    for i in range(start+1,end+1):
+        elem = arr[i]
+        j = i-1
+        while j>=start and elem<arr[j]:
+            arr[j+1] = arr[j]
+            j -= 1
+        arr[j+1] = elem
+    return arr
+def mergeTS(arr,start,mid,end):
+    if mid==end:
+        return arr
+    first = arr[start:mid+1]
+    last = arr[mid+1:end+1]
+    len1 = mid-start+1
+    len2 = end-mid
+    ind1 = 0
+    ind2 = 0
+    ind  = start
+
+    while ind1<len1 and ind2<len2:
+        if first[ind1]<last[ind2]:
+            arr[ind] = first[ind1]
+            ind1 += 1
+        else:
+            arr[ind] = last[ind2]
+            ind2 += 1
+        ind += 1
+
+    while ind1<len1:
+        arr[ind] = first[ind1]
+        ind1 += 1
+        ind += 1
+
+    while ind2<len2:
+        arr[ind] = last[ind2]
+        ind2 += 1
+        ind += 1
 
     return arr
 
+def TimSort(arr):
+    n = len(arr)
 
-# STRETCH: implement the Timsort function below
-# hint: check out https://github.com/python/cpython/blob/master/Objects/listsort.txt
-def timsort(arr):
+    for start in range(0,n,minrun):
+        end = min(start+minrun-1,n-1)
+        arr = InsSort(arr,start,end)
+
+    curr_size = minrun
+    while curr_size<n:
+        for start in range(0,n,curr_size*2):
+            mid = min(n-1,start+curr_size-1)
+            end = min(n-1,mid+curr_size)
+            arr = mergeTS(arr,start,mid,end)
+        curr_size *= 2
     return arr
+
+

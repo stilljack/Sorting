@@ -19,12 +19,12 @@ class BenchMarker(object):
         return wrapped
 
 
-    def doTestsWith(self,func):
+    def doTestsWith(self,func,float:bool=False):
         count = 0
         for i in range(self.executeConst):
             count+=1
-            newRandom=self._newRand_(self.sizeOfTests, self.lowRange, self.highRange)
-            print([newRandom[i] for i in newRandom[:-6:-1]])
+            newRandom=self._newRand_(self.sizeOfTests, self.lowRange, self.highRange,float)
+            print([newRandom[int(i)] for i in newRandom[:-6:-1]])
             wrapped = self._wrapper_(func, newRandom)
             nameOfTest = f"{func.__name__} list {count}"
             print(f" execute count: {self.executeConst} Fun: {func.__name__} list: list{count}")
